@@ -60,3 +60,37 @@ Java has exactly eight primitive data types, which are the basic building blocks
 </ul>
 <h1></h1>
 </details>
+
+## **Advanced**
+<details>
+<summary><b>What is Integer caching?</b></summary>
+<h1></h1>
+There is a private static <code>IntegerCache</code> class inside the <code>Integer</code> class, which is initialized the first time it is accessed. By default, it stores objects for all numbers in the range from <strong>-128 to 127</strong>, which corresponds to the range of the <code>byte</code> type.
+  
+```java
+Integer a1 = 100;
+Integer b1 = 100;
+System.out.println(a1 == b1); // true
+  
+Integer a2 = 1000;
+Integer b2 = 1000;
+System.out.println(a2 == b2); // false
+```
+The <code>==</code> operator compares addresses in memory (references) in the <strong>Stack</strong>. In the first case, references point to the same object in <code>IntegerCache</code>. In the second case, two new objects are created in the <strong>Heap</strong>.
+<h1></h1>
+</details>
+
+<details>
+<summary><b>What is the behavior of == vs .equals() for wrapper types?</b></summary>
+<h1></h1>
+In the context of <strong>wrapper classes</strong>, the <code>==</code> operator compares references to objects in memory, and <code>.equals()</code> compares their actual values.
+  
+```java
+Integer a2 = 1000;
+Integer b2 = 1000;
+System.out.println(a2 == b2); // false
+System.out.println(a2.equals(b2)); // true
+```
+Since <code>==</code> compares addresses, it may return <code>true</code> for cached values (up to 127) but <code>false</code> for others. Therefore, <code>.equals()</code> is the reliable way to compare the values of wrapper objects.
+<h1></h1>
+</details>
