@@ -86,6 +86,8 @@ Compared to alternatives like <code>EnumSet</code> or <code>Boolean</code>, bit 
 <details>
 <summary><b>Can operators be overloaded in Java?</b></summary>
 <h1></h1>
+<img src="https://github.com/KaspersonMakar/Theory/blob/main/Matherials/NoMeme.png" alt="tst" width="500">
+<p></p>
 Unlike languages like C++ or Python, Java <strong>does not</strong> allow you to change the behavior of standard symbols (such as <code>+</code> or <code>*</code>) for your own classes.
 <h1></h1>
 </details>
