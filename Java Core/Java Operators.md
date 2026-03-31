@@ -86,3 +86,45 @@ Compared to alternatives like <code>EnumSet</code> or <code>Boolean</code>, bit 
 Unlike languages like C++ or Python, Java <strong>does not</strong> allow you to change the behavior of standard symbols (such as <code>+</code> or <code>*</code>) for your own classes.
 <h1></h1>
 </details>
+
+## **Advanced**
+<details>
+<summary><b>Operator Precedence</b></summary>
+<h1></h1>
+Priority determines the order in which the parts of an expression are evaluated if there are no parentheses in it. These are the "rules of the road" for Java.
+<br><br>
+
+| Priority | Type of operators | Examples |
+|:---:|:---|:---|
+| **1 (Highest)** | Postfix | <code>expr++</code>, <code>expr--</code> |
+| **2** | Unary | <code>++expr</code>, <code>--expr</code>, <code>+</code>, <code>-</code>, <code>~</code>, <code>!</code> |
+| **3** | Multiplicative | <code>*</code>, <code>/</code>, <code>%</code> |
+| **4** | Additive | <code>+</code>, <code>-</code> |
+| **5** | The Shift | <code>&lt;&lt;</code>, <code>&gt;&gt;</code>, <code>&gt;&gt;&gt;</code> |
+| **6** | Comparison | <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>instanceof</code> |
+| **7** | Equality | <code>==</code>, <code>!=</code> |
+| **8** | Bitwise And | <code>&</code> |
+| **9** | Bitwise XOR | <code>^</code> |
+| **10** | Bitwise OR | <code>`</code> |
+| **11** | Logical And | <code>&&</code> |
+| **12** | Logical OR | <code>`</code> |
+| **13 (Lowest)** | Assignment | <code>=</code>, <code>+=</code>, <code>-=</code>, <code>*=</code>, <code>/=</code>, <code>%=</code> |
+
+<h1></h1>
+</details>
+
+<details>
+<summary><b>What is the difference between & and &&?</b></summary>
+<h1></h1>
+Although both operators can be used for the logical "And", they work in different ways and have different purposes:
+<br><br>
+
+| Characteristic | Operator <code>&&</code> (Logical AND) | Operator <code>&</code> (Bitwise/Logical AND) |
+|:---|:---|:---|
+| **Type** | Logical ("short And"). | Bitwise or full logical. |
+| **Short-circuiting** | Supports it. If the left part is <code>false</code>, the right part is not calculated. | Does not support. Always evaluates both parts of the expression. |
+| **Operands** | <code>boolean</code> only. | Integers (bits) or <code>boolean</code>. |
+| **Application** | Conditional statements (<code>if</code>, <code>while</code>). | Bitmasks or cases where the right-hand side must be executed. |
+
+<h1></h1>
+</details>
