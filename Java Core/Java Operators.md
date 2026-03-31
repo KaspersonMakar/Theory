@@ -67,12 +67,7 @@ Bit operations are data manipulations at the level of bits (0 and 1). In Java, t
 <li><code>^</code> (XOR): Result is 1 if bits are different.</li>
 <li><code>~</code> (NOT): Inverts all bits.</li>
 <li><code>&lt;&lt;, &gt;&gt;, &gt;&gt;&gt;</code> (Shifts): Move bits left or right, effectively performing fast multiplication or division by powers of two.</li>
-<h1></h1>
-</details>
-
-<details>
-<summary><b>Why use bit operations instead of alternatives?</b></summary>
-<h1></h1>
+<br>
 The choice of bit operations is justified in three cases:
 <ul>
 <li><b>Extreme performance</b>: If the operation is performed millions of times per second (e.g., graphics rendering).</li>
