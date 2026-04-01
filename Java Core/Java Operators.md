@@ -148,3 +148,65 @@ Although both operators can be used for the logical "And", they work in differen
 </ol>
 <h1></h1>
 </details>
+
+<details>
+<summary><b>What are common bugs caused by misuse of operators?</b></summary>
+<h1></h1>
+Incorrect use of operators can lead to subtle logic errors:
+<ul>
+  <li><b>Assignment instead of comparison</b>: Using <code>=</code> (assignment) instead of <code>==</code> (comparison) inside conditions.</li>
+  <li><b>Short-circuit trap and side effects</b>: Placing critical logic that <i>must</i> be executed on the right-hand side of <code>&&</code> or <code>||</code> operators, where it might be skipped.</li>
+  <li><b>Precedence errors</b>: Mixing different operator types in a single expression without explicit grouping parentheses.</li>
+  <li><b>Integer division</b>: Performing division where both operands are <code>int</code>, leading to truncated results before they are assigned to a fractional type.</li>
+</ul>
+
+<b>Example of Integer division error:</b>
+
+```java
+double progress = taskCount / totalTasks * 100;
+// If taskCount = 1 and totalTasks = 2, result is 0.0, not 50.0
+
+```
+<h1></h1>
+</details>
+
+<details>
+<summary><b>How do operators affect concurrency (is ++ atomic)?</b></summary>
+<h1></h1>
+In Java, almost all operators are <b>not atomic</b>. A single line of code translates into multiple CPU instructions, allowing other threads to intervene.
+
+<b>1. Why isn't ++ atomic?</b>
+The increment operator (<code>i++</code>, <code>++i</code>) is a "Read-Modify-Write" operation:
+
+<ol>
+<li><b>Read</b>: Value is copied from main memory to a register.</li>
+<li><b>Modify</b>: Value in the register is incremented.</li>
+<li><b>Write</b>: New value is written back to memory.</li>
+</ol>
+If two threads do this simultaneously, one increment can be "lost," resulting in 1 instead of 2.
+
+<b>2. Pitfall with 64-bit types (long and double)</b>
+Even simple assignment (<code>=</code>) is not always atomic for <code>long</code> and <code>double</code>. According to the JLS, they can be treated as two separate 32-bit writes.
+
+<h1></h1>
+</details>
+
+<details>
+<summary><b>How to ensure atomicity in operations?</b></summary>
+<h1></h1>
+There are two main approaches to fixing concurrency issues with operators:
+
+<b>A. Synchronized / Locks (Pessimistic)</b>
+Locking access to the variable so only one thread can execute the operation at a time:
+```java
+synchronized(lock) {
+    i++;
+}
+```
+<b>B. Atomic Classes (Optimistic / CAS)</b>
+Using classes like <code>AtomicInteger</code>, which utilize the <b>Compare-And-Swap (CAS)</b> hardware instruction to perform the operation in a single indivisible cycle:
+```java
+atomicInt.incrementAndGet(); // Atomic at the processor level
+```
+<h1></h1>
+</details>
