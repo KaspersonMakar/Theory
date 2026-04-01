@@ -128,3 +128,23 @@ Although both operators can be used for the logical "And", they work in differen
 
 <h1></h1>
 </details>
+
+<details>
+<summary><b>Side-effect-free expressions</b></summary>
+<h1></h1>
+&emsp;A <strong>side-effect-free expression</strong> (also known as a "pure" expression) is code that calculates a value without changing the state of the program. This means it does not modify variable values, write to files, or change objects in memory.
+
+<ul>
+  <li><b>Example with a side effect</b>: <code>a++ + b</code>. The value of variable <code>a</code> is incremented (changed) during the calculation.</li>
+  <li><b>Example without a side effect</b>: <code>a + b + 1</code>. This simply calculates a sum; the original data in <code>a</code> and <code>b</code> remains unchanged.</li>
+</ul>
+
+<br><b>Why is this important?</b>
+<ol>
+  <li><b>Predictability and reliability</b>: Code becomes easier to read and debug. You can be confident that a simple conditional check in an <code>if</code> statement won't unexpectedly change a database record or a counter in memory.</li>
+  <li><b>Short-circuiting safety</b>: As discussed with <code>&&</code> and <code>||</code> operators, the right side of a logical expression might not be executed. If that expression has a side effect, the program state becomes dependent on whether the short-circuit happened. Pure expressions avoid this instability.</li>
+  <li><b>Optimization and Caching</b>: The compiler and JVM can safely optimize pure expressions, reorder them, or cache results since they do not affect the rest of the system.</li>
+  <li><b>Testability</b>: Expressions without side effects are much easier to cover with unit tests, as their results depend strictly on the input data.</li>
+</ol>
+<h1></h1>
+</details>
