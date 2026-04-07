@@ -112,3 +112,28 @@ Safe iteration means traversing a collection without throwing a <code>Concurrent
 </ul>
 <h1></h1>
 </details>
+
+<details>
+<summary><b>Switch performance: O(1) vs O(log n)</b></summary>
+<h1></h1>
+Depending on how the <code>case</code> values are distributed, the Java compiler optimizes the <code>switch</code> statement in two different ways:
+<br><br>
+
+<b>1. tableswitch: Indexing Magic (O(1))</b>
+<br>Used when <code>case</code> values are tightly packed (e.g., 1, 2, 3, 4 or 10, 11, 13).
+<ul>
+  <li><b>How it works</b>: The compiler creates a jump table — essentially an array in memory containing the instruction addresses for each case.</li>
+  <li><b>Mechanics</b>: The processor doesn't need to compare the variable with each value. It takes your number, subtracts the minimum value (offset), and uses the result as an index into the array.</li>
+  <li><b>Result</b>: Jumping to the desired code happens in a single operation, regardless of whether you have 5 cases or 500. Complexity: <b>O(1)</b>.</li>
+</ul>
+
+<b>2. lookupswitch: Binary search (O(log n))</b>
+<br>Used if the values are scattered (e.g., 1, 100, 10000), as building a huge table with "holes" in memory would be inefficient.
+<ul>
+  <li><b>Mechanics</b>: The <code>case</code> values are sorted at compile time. At runtime, the JVM performs a binary search on these values.</li>
+  <li><b>Result</b>: Even with 100 options, the JVM will find the required address in at most 7 steps (log2 100 ≈ 6.64). Complexity: <b>O(log n)</b>.</li>
+</ul>
+
+<br><b>Comparison:</b> In the worst-case scenario, an <code>if-else</code> chain would force the processor to perform all comparisons linearly, whereas <code>switch</code> provides much faster access.
+<h1></h1>
+</details>
