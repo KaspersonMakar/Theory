@@ -9,7 +9,7 @@
 Object initialization is the process of creating an instance of a class in memory (Heap) and bringing it into a working state. It is not just a constructor call, but a whole chain of events triggered by the <code>new</code> keyword.
 
 When you write <code>Integer a = new Integer();</code>, the JVM performs the following steps:
-<br><b>Class Loading -> Memory Allocation -> Zeroing -> Initialization -> Constructor</b>
+<br><b>Class Loading -> Static Initialization -> Memory Allocation & Zeroing -> Instance Initialization </b>
 
 <br>
 <details>
