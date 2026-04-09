@@ -47,10 +47,109 @@ This ensures that you never read "garbage" from memory left over from previous o
 <summary><b>Step 4: Instance Initialization (&lt;init&gt;)</b></summary>
 Now the process of turning a "zeroed blank" into a real object begins. This stage involves:
 <ul>
-  <li>Constructor call.</li>
+  <li>Parant's constructor call <code>(super())</code>.</li>
   <li>Field initializers.</li>
   <li>Initialization blocks.</li>
   <li>Execution of the constructor body.</li>
+</ul>
+</details>
+<h1></h1>
+</details>
+
+<details>
+<summary><b>What are instance initializer blocks?</b></summary>
+<h1></h1>
+An instance initializer block is simply a set of braces <code>{ }</code> inside a class containing executable code. It cannot be used inside methods or other initialization blocks.
+<br><br>
+<b>Code example:</b>
+  
+```java
+public class ChessPiece {
+    String type;
+
+    // This is an INSTANCE INITIALIZER BLOCK
+    {
+        System.out.println("Block executed");
+        type = "Pawn"; 
+    }
+
+    public ChessPiece() {
+        System.out.println("Constructor executed");
+    }
+}
+```
+<br>
+<b>How it works "under the hood":</b>
+During compilation, <code>javac</code> scans the source code. It takes all anonymous blocks (not marked as <code>static</code>) and places them into the internal <code>&lt;init&gt;</code> method in the following order:
+<ol>
+  <li>Call to <code>super()</code>.</li>
+  <li>Field initializers AND Initialization blocks (in the order they appear in the code from top to bottom).</li>
+  <li>The body of the constructor.</li>
+</ol>
+<h1></h1>
+</details>
+
+<details>
+<summary><b>What is the difference between constructor and initializer block?</b></summary>
+<h1></h1>
+
+| Characteristic | Initializer Block | Constructor |
+|:---|:---|:---|
+| **Parameters** | Cannot take arguments. | Can take arguments to configure the object. |
+| **Execution** | Always executed for every object created. | Only the specific called constructor is executed. |
+| **Name** | None. | Must match the class name. |
+| **Logic** | Usually for common setup or anonymous classes. | For specific configuration of a particular instance. |
+<h1></h1>
+</details>
+
+<details>
+<summary><b>What is a static initialization block?</b></summary>
+<h1></h1>
+A <code>static { ... }</code> block is used to initialize static fields or perform actions when the <b>class</b> is first loaded into memory.
+<br><br>
+<b>Code example:</b>
+  
+```java
+public class Board {
+    static String[][] board;
+    static {
+        int size = 8;
+        board = new String[size][size];
+        System.out.println("Static block: Field created");
+    }
+}
+```
+<br>
+<b>Key rules:</b>
+<ul>
+  <li><b>Execution</b>: Runs exactly once when the class is loaded by the JVM.</li>
+  <li><b>Triggers</b>: Class loading is triggered by creating the first instance, accessing a static field/method, or using <code>Class.forName()</code>.</li>
+  <li><b>Limitations</b>: You cannot use <code>this</code> or <code>super</code>, or access non-static instance fields/methods because the object doesn't exist yet.</li>
+</ul>
+<h1></h1>
+</details>
+
+<details>
+<summary><b>What happens if initialization fails?</b></summary>
+<h1></h1>
+
+<details>
+<summary><b>Scenario A: Error in a static block (Class failure)</b></summary>
+If an exception is thrown inside a <code>static { ... }</code> block:
+<ul>
+  <li>The JVM throws an <code>ExceptionInInitializerError</code>.</li>
+  <li>This is an <b>Error</b>, not a regular Exception. The class is marked as "unusable".</li>
+  <li>Any subsequent attempt to access this class will result in a <code>NoClassDefFoundError</code>.</li>
+</ul>
+</details>
+
+<details>
+<summary><b>Scenario B: Error in a constructor (Object failure)</b></summary>
+If an exception is thrown in a regular block <code>{ ... }</code> or a constructor:
+<ul>
+  <li>A regular Exception is thrown.</li>
+  <li>The object is not created, and no reference is returned from the <code>new</code> keyword.</li>
+  <li><b>Note:</b> If the object already partially occupied memory, it will eventually be cleaned up by the Garbage Collector.</li>
 </ul>
 </details>
 <h1></h1>
