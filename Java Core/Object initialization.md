@@ -154,3 +154,109 @@ If an exception is thrown in a regular block <code>{ ... }</code> or a construct
 </details>
 <h1></h1>
 </details>
+
+## **Advanced**
+
+<details>
+<summary><b>How are final fields initialized?</b></summary>
+<h1></h1>
+Fields with the <code>final</code> modifier are not just constants. It is a promise to the compiler and the JVM that the value will be set <b>exactly once</b> and will never change. To keep this promise, Java imposes strict rules on their initialization.
+
+<br><b>Three legitimate places for initialization:</b>
+<ul>
+  <li><b>At declaration</b>: <code>final int x = 10;</code>.</li>
+  <li><b>In an instance initializer block</b>: <code>{ x = 10; }</code>.</li>
+  <li><b>In every constructor</b>: If you haven't initialized the field by the first two methods, you are required to do so in every constructor of the class.</li>
+</ul>
+
+A field not initialized at declaration is called a <b>blank final</b>. This is a powerful tool: it allows a field to be immutable while still depending on input data.
+
+<br><b>The "Definite Assignment" Rule</b>
+<br>Unlike regular fields, which default to <code>0</code> or <code>null</code> if forgotten, <code>final</code> fields must be explicitly assigned. The Java compiler uses a <b>Definite Assignment</b> algorithm to prove that the variable will receive a value in every possible execution path.
+
+<b>Example:</b>
+
+```java
+final int x;
+if (condition) {
+    x = 10;
+} 
+// ERROR: The compiler will say x might remain uninitialized if condition is false. 
+// You must add an 'else { x = 20; }'.
+```
+
+<br><b>static final</b>
+<br>For static final fields, the rules are even stricter. Since they have no constructors, there are only two places:
+<ol>
+  <li>At declaration.</li>
+  <li>In a static initialization block: <code>static { ... }</code>.</li>
+</ol>
+If it is a primitive or a string known at compile time, it becomes a <b>compile-time constant</b>. The JVM won't even access the class for this value—it "embeds" the value directly into the call sites in other classes.
+<h1></h1>
+</details>
+
+<details>
+<summary><b>What is lazy initialization?</b></summary>
+<h1></h1>
+<b>Lazy Initialization</b> is a strategy where the creation of a "heavy" object or the calculation of a complex value is deferred until the moment it is actually needed in the code.
+<br><br>
+<b>Benefits:</b>
+<ul>
+  <li>Speeds up application startup (e.g., loading only 50 services initially instead of 100).</li>
+  <li>Saves resources (e.g., if a service might not be used at all during execution).</li>
+</ul>
+
+<br><b>Multithreaded implementation (Double-Checked Locking):</b>
+
+```java
+public class HeavyService {
+    private volatile HeavyObject instance; // The key is 'volatile'
+
+    public HeavyObject getInstance() {
+        if (instance == null) { // First check (no locking)
+            synchronized (this) {
+                if (instance == null) { // Second check (under lock)
+                    instance = new HeavyObject();
+                }
+            }
+        }
+        return instance;
+    }
+}
+```
+
+<b>The "volatile" nuance:</b> Without <code>volatile</code>, a thread might see a reference to the object before the constructor has finished its work. <code>volatile</code> guarantees that the write to <code>instance</code> happens strictly after the constructor completes.
+<h1></h1>
+</details>
+
+<details>
+<summary><b>What are circular dependencies during initialization?</b></summary>
+<h1></h1>
+A <b>circular dependency</b> during initialization occurs when Class A requires Class B for its setup, while Class B, at that same moment, requires Class A.
+<br><br>
+In Java, this doesn't lead to an immediate crash (like <code>StackOverflowError</code>), but it creates some of the most elusive bugs where <code>null</code> or <code>0</code> appears where they shouldn't be, because one of the classes is accessed before it is fully initialized.
+<h1></h1>
+</details>
+
+<details>
+<summary><b>How does JVM guarantee initialization safety?</b></summary>
+<h1></h1>
+At the core is the <b>Initialization Lock (LC)</b>—a special lock assigned to every class. The JVM uses a complex 12-step algorithm, but simplified, it works as a <b>state machine</b>.
+
+<br><b>Four states of a class:</b>
+<ul>
+  <li><b>Not initialized</b>: Class is loaded, but statics haven't run.</li>
+  <li><b>Being initialized</b>: Thread T is currently executing <code>&lt;clinit&gt;</code>.</li>
+  <li><b>Fully initialized</b>: Everything is ready for use.</li>
+  <li><b>Error state</b>: Initialization failed (throws <code>ExceptionInInitializerError</code>).</li>
+</ul>
+
+<b>Protection mechanism:</b>
+<ul>
+  <li>When a thread requests a class, it must acquire the <b>LC-lock</b>.</li>
+  <li>If the state is <b>"Being initialized"</b> by another thread, the current thread goes to sleep and waits.</li>
+  <li>If the state is <b>"Fully initialized"</b>, the thread proceeds immediately.</li>
+  <li><b>Happens-Before</b>: All memory changes made in a static block are guaranteed to be visible to all other threads once initialization is complete.</li>
+</ul>
+<h1></h1>
+</details>
