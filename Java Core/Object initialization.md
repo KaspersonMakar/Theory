@@ -90,6 +90,58 @@ During compilation, <code>javac</code> scans the source code. It takes all anony
 </details>
 
 <details>
+<summary><b>What constructors exist in Java?</b></summary>
+<h1></h1>
+From a language perspective, they are divided into three main types:
+<ul>
+  <li><b>Default Constructor</b>: If you do not write any constructor in your class, the compiler automatically adds an empty constructor with no arguments. As soon as you add any constructor of your own, the default one disappears.</li>
+  <li><b>No-arg Constructor</b>: A constructor you write manually that takes no parameters (e.g., <code>public Board() { ... }</code>). It is used when an object has a sensible "default" state.</li>
+  <li><b>Parameterized Constructor</b>: Takes data to configure the object (e.g., <code>public Piece(Color color, ...)</code>). This represents an "obligation"—the object cannot be created without these specific parameters.</li>
+</ul>
+<h1></h1>
+</details>
+
+<details>
+<summary><b>What is a copy constructor?</b></summary>
+<h1></h1>
+Java does not have a built-in copy constructor (like C++), but it is a standard pattern. This is a constructor that takes an <b>object of the same class</b> as a parameter and creates an exact copy of it.
+<br><br>
+<b>Example:</b>
+  
+```java
+public ChessPiece(ChessPiece other) {
+    this.color = other.color;
+    this.pieceType = other.pieceType;
+    // Note: creating a new object for the position to ensure independence
+    this.position = new Position(other.position.getRow(), other.position.getCol()); 
+}
+  
+```
+<h1></h1>
+</details>
+
+<details>
+<summary><b>What does an object consist of?</b></summary>
+<h1></h1>
+Every object in Java is defined by three key characteristics:
+<ul>
+  <li><b>State</b>: Refers to the data variables (fields) that describe the object's current condition. For a "Car", this would be color, speed, and fuel level.</li>
+  <li><b>Behavior</b>: Represented by methods. It defines the functional actions an object can perform, such as "accelerate" or "brake".</li>
+  <li><b>Identity</b>: What makes an object unique and independent. In Java, this is typically associated with its memory address, allowing the JVM to distinguish between two objects even if their states are identical.</li>
+</ul>
+<h1></h1>
+</details>
+
+<details>
+<summary><b>What is deep copying?</b></summary>
+<h1></h1>
+<b>Deep copying</b> is the process of creating a complete, independent copy of an object, where all nested objects and structures are also copied recursively.
+<br><br>
+Unlike shallow copying, a deep copy does not share references to internal data with the original. This makes any changes to the copy absolutely safe for the source object, as they do not affect each other.
+<h1></h1>
+</details>
+
+<details>
 <summary><b>What is the difference between constructor and initializer block?</b></summary>
 <h1></h1>
 
