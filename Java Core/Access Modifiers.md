@@ -1,4 +1,4 @@
-# **Access Modifiers & Encapsulation**
+# **Access Modifiers**
 #### [Back to repository](https://github.com/KaspersonMakar/Theory)
 
 ## **Base**
